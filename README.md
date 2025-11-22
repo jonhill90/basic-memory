@@ -1,6 +1,6 @@
 # BasicMemory
 
-A Docker-based MCP server for basic-memory that integrates with your Obsidian vault.
+A Docker-based MCP server for basic-memory that integrates with your Obsidian vault via HTTP/SSE transport.
 
 ## Setup
 
@@ -9,9 +9,11 @@ A Docker-based MCP server for basic-memory that integrates with your Obsidian va
    ```bash
    cp .env.example .env
    ```
-3. Edit `.env` and set your Obsidian vault path:
-   ```
+3. Edit `.env` and configure:
+   ```bash
    OBSIDIAN_VAULT_PATH=/path/to/your/obsidian-vault
+   BASIC_MEMORY_PORT=8050
+   LOG_LEVEL=info
    ```
 4. Start the service:
    ```bash
@@ -20,11 +22,24 @@ A Docker-based MCP server for basic-memory that integrates with your Obsidian va
 
 ## Configuration
 
-The service expects an environment variable `OBSIDIAN_VAULT_PATH` pointing to your Obsidian vault directory on the host machine.
+### Environment Variables
 
-Example paths:
+- `OBSIDIAN_VAULT_PATH` - Path to your Obsidian vault on the host machine (required)
+- `BASIC_MEMORY_PORT` - Port for the HTTP/SSE server (default: 8050)
+- `LOG_LEVEL` - Log verbosity: debug, info, warn, error (default: info)
+
+### Example Paths
+
 - Windows: `C:/Users/YourName/Documents/ObsidianVault`
 - Linux/Mac: `/home/username/Documents/ObsidianVault`
+
+## Usage
+
+Once running, the MCP server is accessible at:
+- **MCP Endpoint**: `http://localhost:8050/mcp`
+- **Health Check**: `http://localhost:8050/health`
+
+The server implements MCP over HTTP with Server-Sent Events (SSE) for streaming responses.
 
 ## Stack Name
 

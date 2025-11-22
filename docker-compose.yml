@@ -2,20 +2,43 @@ name: Basic-Memory
 
 services:
   basic-memory-mcp:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+
     container_name: basic-memory-mcp
     image: basic-memory/mcp-server
+
+    ports:
+      - "${BASIC_MEMORY_PORT:-8050}:8000"
+
     environment:
       - BASIC_MEMORY_DIR=/obsidian-vault
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+          pids: 200
+
     volumes:
       # Mount Obsidian vault using environment variable from .env file
       - "${OBSIDIAN_VAULT_PATH}:/obsidian-vault"
       - /var/run/docker.sock:/var/run/docker.sock
+
+    healthcheck:
+      test: ["CMD", "sh", "-c", "ps aux | grep -v grep | grep -q 'node'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
     networks:
       - basic-memory-network
+
     restart: unless-stopped
-    stdin_open: true
-    tty: true
 
 networks:
   basic-memory-network:

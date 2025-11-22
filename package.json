@@ -1,0 +1,14 @@
+{
+  "name": "basic-memory-mcp-wrapper",
+  "version": "1.0.0",
+  "description": "HTTP/SSE wrapper for Basic Memory MCP Server",
+  "type": "module",
+  "main": "src/http-wrapper.js",
+  "scripts": {
+    "start": "./start.sh",
+    "build": "echo 'No build needed - using wrapper script'"
+  },
+  "dependencies": {},
+  "author": "Jon",
+  "license": "MIT"
+}
