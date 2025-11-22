@@ -1,21 +1,22 @@
+name: Basic-Memory
+
 services:
   basic-memory-mcp:
     build: .
     container_name: basic-memory-mcp
-    image: vibes/mcp-basic-memory-server
+    image: basic-memory/mcp-server
     environment:
       - BASIC_MEMORY_DIR=/obsidian-vault
     volumes:
-      # Mount Obsidian vault using environment variable
-      - "${HOST_VAULT_PATH}:/obsidian-vault"
+      # Mount Obsidian vault using environment variable from .env file
+      - "${OBSIDIAN_VAULT_PATH}:/obsidian-vault"
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - vibes-network
+      - basic-memory-network
     restart: unless-stopped
     stdin_open: true
     tty: true
 
-# Use the existing vibes network
 networks:
-  vibes-network:
-    external: true
+  basic-memory-network:
+    driver: bridge
